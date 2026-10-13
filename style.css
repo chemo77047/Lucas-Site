@@ -1,0 +1,629 @@
+/* ============ LUCAS ALEXANDER THE GREAT ============ */
+
+:root {
+  --bg: #0c0a07;
+  --bg2: #14100b;
+  --panel: #1a150d;
+  --gold: #d4af37;
+  --gold-hi: #f4e3a1;
+  --gold-dim: #8a6f28;
+  --ivory: #efe6cf;
+  --dim: #a2947a;
+  --crimson: #9c2b2b;
+  --border: rgba(212, 175, 55, 0.22);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--ivory);
+  font-family: "Cormorant Garamond", Georgia, serif;
+  font-size: 1.15rem;
+  overflow-x: hidden;
+}
+
+h1, h2, .hero-great, .hero-kicker, button, .sec-num {
+  font-family: "Cinzel", Georgia, serif;
+}
+
+::selection { background: var(--gold); color: #1a1204; }
+
+#embers {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.container { max-width: 1050px; margin: 0 auto; padding: 0 1.5rem; }
+
+h2 {
+  font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+  letter-spacing: 0.12em;
+  color: var(--gold-hi);
+  margin-bottom: 0.6rem;
+}
+
+.sec-num { color: var(--gold-dim); margin-right: 0.4em; }
+
+.sec-sub {
+  color: var(--dim);
+  font-style: italic;
+  margin-bottom: 2.4rem;
+  font-size: 1.1rem;
+}
+
+/* ---------- Greek meander border ---------- */
+
+.meander {
+  height: 22px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='22'%3E%3Cpath d='M2 20 V6 H18 V14 H10 V10 H14' fill='none' stroke='%23d4af37' stroke-width='2'/%3E%3C/svg%3E");
+  background-repeat: repeat-x;
+  opacity: 0.55;
+}
+.meander.flip { transform: scaleY(-1); }
+
+/* ---------- hero ---------- */
+
+.hero {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+}
+
+.hero-bg {
+  position: absolute;
+  inset: -4%;
+  background: url("assets/mosaic.jpg") center 35% / cover no-repeat;
+  animation: slowZoom 40s ease-in-out infinite alternate;
+  filter: saturate(0.75) brightness(0.9);
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.12); }
+}
+
+.hero-shade {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 50% 45%, rgba(12, 10, 7, 0.25) 0%, rgba(12, 10, 7, 0.88) 75%),
+    linear-gradient(rgba(12, 10, 7, 0.55), rgba(12, 10, 7, 0.92));
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 1;
+  padding: 2rem;
+  display: flex;
+  align-items: center;
+  gap: clamp(2rem, 5vw, 4.5rem);
+  max-width: 1200px;
+}
+
+.hero-text { text-align: center; flex: 1.2; }
+
+.hero-portrait {
+  flex: 0.8;
+  max-width: 380px;
+  padding: 12px;
+  background: linear-gradient(135deg, #f4e3a1, #8a6f28 30%, #f0d98c 50%, #6e5720 75%, #e8cf8a);
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.7), inset 0 0 0 1px rgba(0,0,0,0.5);
+  transform: rotate(2deg);
+  animation: portraitIn 1.4s cubic-bezier(0.2, 0.8, 0.3, 1) 0.4s backwards;
+}
+.hero-portrait img { display: block; width: 100%; }
+.hero-portrait figcaption {
+  text-align: center;
+  padding: 0.6rem 0 0.2rem;
+  font-style: italic;
+  color: #3a2d12;
+  font-size: 1rem;
+}
+
+@keyframes portraitIn {
+  from { opacity: 0; transform: rotate(6deg) translateY(40px) scale(0.92); }
+  to { opacity: 1; transform: rotate(2deg); }
+}
+
+@media (max-width: 860px) {
+  .hero-inner { flex-direction: column; }
+  .hero-portrait { max-width: 300px; }
+}
+
+.hero-kicker {
+  letter-spacing: 0.35em;
+  font-size: clamp(0.7rem, 1.6vw, 1rem);
+  color: var(--gold);
+  margin: 1.2rem 0 0.8rem;
+}
+
+h1 {
+  font-size: clamp(2.6rem, 8vw, 6rem);
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: var(--ivory);
+  text-shadow: 0 0 80px rgba(212, 175, 55, 0.35), 0 4px 30px rgba(0,0,0,0.8);
+}
+
+.hero-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: var(--gold);
+  margin: 1.1rem 0;
+  font-size: 1.1rem;
+}
+
+.hero-rule span {
+  display: block;
+  width: min(200px, 26vw);
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.hero-rule span:last-child {
+  background: linear-gradient(90deg, var(--gold), transparent);
+}
+
+.hero-great {
+  font-size: clamp(1.6rem, 5vw, 3.4rem);
+  font-weight: 600;
+  letter-spacing: 0.5em;
+  text-indent: 0.5em; /* visually centers tracked text */
+  background: linear-gradient(180deg, var(--gold-hi) 20%, var(--gold) 55%, var(--gold-dim));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 2px 14px rgba(212, 175, 55, 0.35));
+}
+
+.hero-sub {
+  margin-top: 1.4rem;
+  color: var(--dim);
+  font-style: italic;
+  font-size: clamp(1rem, 2vw, 1.25rem);
+}
+
+.scroll-cue {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+  text-align: center;
+  color: var(--gold-dim);
+  font-family: "Cinzel", serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+}
+.scroll-cue i {
+  display: block;
+  width: 1px;
+  height: 42px;
+  margin: 0.5rem auto 0;
+  background: linear-gradient(var(--gold), transparent);
+  animation: drip 2.2s ease-in-out infinite;
+}
+@keyframes drip {
+  0% { transform: scaleY(0); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: top; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+/* ---------- Vergina sun (injected by JS) ---------- */
+
+.vergina {
+  display: inline-block;
+  filter: drop-shadow(0 0 18px rgba(212, 175, 55, 0.45));
+  animation: sunSpin 90s linear infinite;
+}
+@keyframes sunSpin { to { transform: rotate(360deg); } }
+
+/* ---------- legend ---------- */
+
+.legend { padding: 0 0 0; background: var(--bg); }
+.legend-grid {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: 3.5rem;
+  align-items: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (max-width: 800px) {
+  .legend-grid { grid-template-columns: 1fr; gap: 2rem; }
+}
+
+.portrait-frame {
+  position: relative;
+  padding: 14px;
+  background:
+    linear-gradient(135deg, #f4e3a1, #8a6f28 30%, #f0d98c 50%, #6e5720 75%, #e8cf8a);
+  border-radius: 4px;
+  box-shadow: 0 30px 60px rgba(0,0,0,0.6), inset 0 0 0 1px rgba(0,0,0,0.5);
+}
+.portrait-frame::before {
+  content: "";
+  position: absolute;
+  inset: 8px;
+  border: 1px solid rgba(30, 20, 5, 0.6);
+  pointer-events: none;
+  z-index: 2;
+}
+.portrait-frame img {
+  display: block;
+  width: 100%;
+  filter: sepia(0.12) contrast(1.02);
+}
+.portrait-frame figcaption {
+  position: absolute;
+  left: 50%;
+  bottom: -14px;
+  transform: translateX(-50%);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  padding: 0.25rem 1.1rem;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--dim);
+  white-space: nowrap;
+  z-index: 3;
+}
+
+.legend-text p { margin-bottom: 1.1rem; line-height: 1.7; }
+.legend-text strong { color: var(--gold-hi); }
+
+.dropcap::first-letter {
+  font-family: "Cinzel", serif;
+  font-size: 3.4em;
+  float: left;
+  line-height: 0.85;
+  padding: 0.06em 0.12em 0 0;
+  color: var(--gold);
+}
+
+.greek-quote {
+  margin-top: 1.6rem;
+  padding-left: 1.2rem;
+  border-left: 3px solid var(--gold);
+  font-size: 1.25rem;
+  color: var(--gold-hi);
+}
+.greek-quote span {
+  display: block;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--dim);
+  margin-top: 0.3rem;
+}
+
+/* ---------- campaigns timeline ---------- */
+
+.campaigns { padding: 5rem 0; background: var(--bg2); }
+
+.timeline {
+  position: relative;
+  padding: 1rem 0;
+}
+.timeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  background: linear-gradient(var(--gold-dim), var(--gold), var(--gold-dim));
+}
+
+.battle {
+  position: relative;
+  width: 46%;
+  margin-bottom: 2.6rem;
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.battle.shown { opacity: 1; transform: none; }
+
+.battle:nth-child(odd) { margin-left: auto; }
+.battle:nth-child(even) { text-align: right; }
+
+.battle::before {
+  content: "";
+  position: absolute;
+  top: 0.5rem;
+  width: 14px; height: 14px;
+  background: var(--bg2);
+  border: 3px solid var(--gold);
+  border-radius: 50%;
+  box-shadow: 0 0 14px rgba(212, 175, 55, 0.7);
+}
+.battle:nth-child(odd)::before { left: -4.35% - 7px; }
+.battle:nth-child(even)::before { right: -4.35% - 7px; }
+
+.battle .year {
+  font-family: "Cinzel", serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.25em;
+  color: var(--crimson);
+  color: #c9604f;
+}
+.battle h3 {
+  font-family: "Cinzel", serif;
+  font-size: 1.25rem;
+  color: var(--gold-hi);
+  letter-spacing: 0.06em;
+  margin: 0.25rem 0 0.4rem;
+}
+.battle p { color: var(--dim); line-height: 1.6; font-size: 1.05rem; }
+.battle p em { color: var(--ivory); }
+
+@media (max-width: 700px) {
+  .timeline::before { left: 10px; }
+  .battle { width: auto; padding-left: 2.4rem; text-align: left !important; }
+  .battle::before { left: 3px !important; right: auto !important; }
+}
+
+/* ---------- empire ---------- */
+
+.empire { padding: 5rem 0; }
+
+.map-frame {
+  padding: 12px;
+  background: linear-gradient(135deg, #f4e3a1, #8a6f28 30%, #f0d98c 50%, #6e5720 75%, #e8cf8a);
+  border-radius: 4px;
+  box-shadow: 0 30px 70px rgba(0,0,0,0.55);
+}
+.map-frame img { display: block; width: 100%; }
+.map-frame figcaption {
+  text-align: center;
+  padding: 0.7rem 0 0.2rem;
+  font-style: italic;
+  color: #3a2d12;
+  font-size: 0.95rem;
+}
+
+/* ---------- treasury / coin ---------- */
+
+.treasury { padding: 0; background: var(--bg); }
+.treasury-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (max-width: 800px) {
+  .treasury-grid { grid-template-columns: 1fr; }
+}
+
+.mint-controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+button {
+  font: inherit;
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  color: #241a05;
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold) 60%, #a9832c);
+  box-shadow: 0 4px 18px rgba(212, 175, 55, 0.3);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+button:hover { transform: translateY(-2px); box-shadow: 0 8px 26px rgba(212, 175, 55, 0.45); }
+button:active { transform: translateY(0); }
+
+button.ghost {
+  background: transparent;
+  color: var(--gold);
+  border: 1px solid var(--border);
+}
+button.ghost:hover { border-color: var(--gold); box-shadow: none; }
+
+.mint-count { color: var(--dim); font-style: italic; font-size: 0.95rem; }
+.mint-count b { color: var(--gold-hi); }
+
+.coin-stage { text-align: center; }
+#coin {
+  cursor: pointer;
+  max-width: 100%;
+  filter: drop-shadow(0 20px 50px rgba(0, 0, 0, 0.7));
+}
+.coin-hint {
+  margin-top: 0.6rem;
+  color: var(--dim);
+  font-size: 0.8rem;
+  font-style: italic;
+  letter-spacing: 0.05em;
+}
+
+/* ---------- gallery ---------- */
+
+.gallery { padding: 5rem 0; background: var(--bg2); }
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.6rem;
+}
+
+.gallery-grid figure {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  overflow: hidden;
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+.gallery-grid figure:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 24px 60px rgba(0,0,0,0.55);
+}
+.gallery-grid img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 3.4;
+  object-fit: cover;
+}
+.gallery-grid figcaption {
+  padding: 0.9rem 1rem 1.1rem;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+.gallery-grid b { color: var(--gold-hi); font-family: "Cinzel", serif; font-size: 0.8rem; letter-spacing: 0.06em; }
+.gallery-grid span { color: var(--dim); font-style: italic; }
+
+/* ---------- the final battle ---------- */
+
+.battlefield { padding: 5rem 0; background: var(--bg2); }
+
+.battle-wrap {
+  position: relative;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(#181207 0%, #241a08 70%, #1c1409 100%);
+}
+
+#battle {
+  display: block;
+  width: 100%;
+  height: 320px;
+  cursor: crosshair;
+}
+
+.battle-hud {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.7rem 1.1rem;
+  font-family: "Cinzel", serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--gold-hi);
+  pointer-events: none;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+}
+
+#battle-lives { color: var(--gold); }
+
+.battle-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.7rem;
+  background: rgba(12, 10, 7, 0.78);
+  backdrop-filter: blur(3px);
+  text-align: center;
+  transition: opacity 0.4s;
+}
+.battle-overlay.hidden { opacity: 0; pointer-events: none; }
+
+.battle-overlay div {
+  font-family: "Cinzel", serif;
+  font-size: clamp(1.2rem, 3vw, 2rem);
+  letter-spacing: 0.15em;
+  color: var(--gold-hi);
+}
+.battle-overlay span { color: var(--dim); font-style: italic; }
+
+#battle-over-title { color: #e07856; }
+
+/* ---------- ride of bucephalus ---------- */
+
+.ride { padding: 5rem 0; background: var(--bg); }
+
+#ride {
+  display: block;
+  width: 100%;
+  height: 260px;
+  cursor: pointer;
+}
+
+/* ---------- music toggle ---------- */
+
+#audio-toggle {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 1.4rem;
+  z-index: 20;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: rgba(20, 16, 11, 0.85);
+  color: var(--gold);
+  font-size: 1.4rem;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.5);
+  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  backdrop-filter: blur(6px);
+}
+
+#audio-toggle:hover {
+  transform: scale(1.08);
+  border-color: var(--gold);
+}
+
+#audio-toggle.on {
+  background: linear-gradient(180deg, var(--gold-hi), var(--gold) 60%, #a9832c);
+  color: #241a05;
+  box-shadow: 0 0 26px rgba(212, 175, 55, 0.55);
+  animation: hymnPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes hymnPulse {
+  0%, 100% { box-shadow: 0 0 14px rgba(212, 175, 55, 0.35); }
+  50% { box-shadow: 0 0 30px rgba(212, 175, 55, 0.7); }
+}
+
+/* ---------- footer ---------- */
+
+footer {
+  text-align: center;
+  padding: 4rem 1.5rem 3rem;
+  border-top: 1px solid var(--border);
+}
+footer .vergina { margin-bottom: 1rem; }
+footer p { color: var(--gold-dim); font-family: "Cinzel", serif; letter-spacing: 0.25em; font-size: 0.8rem; }
+.foot-small {
+  margin-top: 1rem;
+  font-family: "Cormorant Garamond", Georgia, serif !important;
+  letter-spacing: 0.03em !important;
+  color: var(--dim) !important;
+  font-size: 0.95rem !important;
+}
+.foot-small code { color: var(--gold); font-size: 0.9em; }

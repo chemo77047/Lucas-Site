@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lucas Alexander the Great</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;800&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<canvas id="embers"></canvas>
+
+<!-- ============ HERO ============ -->
+<header class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-shade"></div>
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="vergina" data-size="100"></div>
+      <div class="hero-kicker">ΛΟΥΚΑΣ ΑΛΕΞΑΝΔΡΟΣ Ὁ ΜΕΓΑΣ</div>
+      <h1>LUCAS ALEXANDER</h1>
+      <div class="hero-rule"><span></span>⚜<span></span></div>
+      <div class="hero-great">THE GREAT</div>
+      <p class="hero-sub">King of the Household · Conqueror of Hearts · undefeated in all things</p>
+    </div>
+    <figure class="hero-portrait">
+      <img src="Lucas2.jpg" alt="Lucas Alexander leading the Companion cavalry" />
+      <figcaption>The King rides out</figcaption>
+    </figure>
+  </div>
+  <div class="scroll-cue"><span>scroll</span><i></i></div>
+</header>
+
+<!-- ============ THE LEGEND ============ -->
+<section class="legend">
+  <div class="meander"></div>
+  <div class="container legend-grid">
+    <figure class="portrait-frame">
+      <img id="heir-photo" src="lucas.jpg" alt="Lucas Alexander" />
+      <figcaption id="heir-caption">Lucas Alexander, in the year of his reign</figcaption>
+    </figure>
+    <div class="legend-text">
+      <h2><span class="sec-num">I.</span> THE LEGEND</h2>
+      <p class="dropcap">
+        In the annals of history, few names shine as brightly as Alexander of
+        Macedon — the boy who tamed an untamable horse, unmade the Gordian Knot,
+        and wore the crowns of Greece, Egypt, and Persia before he was thirty.
+      </p>
+      <p>
+        But the old chronicles got one thing wrong: they thought the story ended
+        in Babylon. It did not. It merely waited — two thousand three hundred
+        years — for the heir to arrive.
+      </p>
+      <p>
+        <strong>Lucas Alexander Barrera.</strong> Same fire in the eyes. Same
+        refusal to accept that anything is impossible. The chroniclers have been
+        summoned. The campaign has already begun.
+      </p>
+      <div class="greek-quote">«οὐδὲν ἀνυπόστατον τοῖς θαρροῦσιν»<span>— “Nothing is impossible for the brave.”</span></div>
+    </div>
+  </div>
+  <div class="meander flip"></div>
+</section>
+
+<!-- ============ CAMPAIGNS ============ -->
+<section class="campaigns">
+  <div class="container">
+    <h2><span class="sec-num">II.</span> THE CAMPAIGNS</h2>
+    <p class="sec-sub">Every empire is won one battle at a time. The official record:</p>
+    <div class="timeline" id="timeline"></div>
+  </div>
+</section>
+
+<!-- ============ THE EMPIRE ============ -->
+<section class="empire">
+  <div class="container">
+    <h2><span class="sec-num">III.</span> THE EMPIRE</h2>
+    <p class="sec-sub">
+      Alexander's world stretched from Greece to India. Lucas's reaches at least
+      as far — from the couch to the kitchen, and every room beyond.
+    </p>
+    <figure class="map-frame">
+      <img src="assets/empire-map.jpg" alt="Map of the Macedonian Empire at its height" />
+      <figcaption>The Macedonian Empire, 323 BC · shortly before Lucas's holdings expanded it</figcaption>
+    </figure>
+  </div>
+</section>
+
+<!-- ============ THE TREASURY ============ -->
+<section class="treasury">
+  <div class="meander"></div>
+  <div class="container treasury-grid">
+    <div>
+      <h2><span class="sec-num">IV.</span> THE ROYAL MINT</h2>
+      <p class="sec-sub">
+        Alexander paid his armies in silver tetradrachms stamped with Heracles
+        and Zeus. Lucas mints in gold — struck on demand, bearing the king's own
+        likeness on the obverse and the sixteen-rayed star on the reverse.
+      </p>
+      <div class="mint-controls">
+        <button id="mint-btn">⚒ Strike a coin</button>
+        <button id="coin-save" class="ghost">Save PNG</button>
+        <span class="mint-count"><b id="minted">0</b> coins struck</span>
+      </div>
+    </div>
+    <div class="coin-stage">
+      <canvas id="coin" width="520" height="520"></canvas>
+      <p class="coin-hint">click the coin to flip it</p>
+    </div>
+  </div>
+  <div class="meander flip"></div>
+</section>
+
+<!-- ============ GALLERY ============ -->
+<section class="gallery">
+  <div class="container">
+    <h2><span class="sec-num">V.</span> THE HALL OF GLORY</h2>
+    <p class="sec-sub">Treasures on permanent loan from antiquity (Wikimedia Commons, public domain):</p>
+    <div class="gallery-grid">
+      <figure>
+        <img src="assets/alexander-detail.jpg" alt="Alexander the Great, detail from the Alexander Mosaic" />
+        <figcaption>
+          <b>The Alexander Mosaic</b> — detail, c. 100 BC<br />
+          <span>National Archaeological Museum, Naples</span>
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="assets/bust.jpg" alt="Marble bust of Alexander the Great" />
+        <figcaption>
+          <b>Marble bust of Alexander</b> — Roman copy<br />
+          <span>after Lysippos, the only sculptor Alexander trusted</span>
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="assets/mosaic.jpg" alt="The full Alexander Mosaic, Battle of Issus" />
+        <figcaption>
+          <b>The Battle of Issus</b> — the full mosaic<br />
+          <span>found in Pompeii; Alexander charges in from the left</span>
+        </figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE FINAL BATTLE ============ -->
+<section class="battlefield">
+  <div class="container">
+    <h2><span class="sec-num">VI.</span> THE FINAL BATTLE</h2>
+    <p class="sec-sub">
+      Persian infantry approaches. <strong>Click the field</strong> to launch a
+      Companion cavalry charge — they will ride down everything in their path.
+      Hold the line: three banners, that's all you have.
+    </p>
+    <div class="battle-wrap">
+      <canvas id="battle"></canvas>
+      <div class="battle-hud">
+        <span id="battle-score">0 routed</span>
+        <span id="battle-lives">☀ ☀ ☀</span>
+      </div>
+      <div class="battle-overlay" id="battle-start">
+        <div>⚔ THE PERSIANS APPROACH ⚔</div>
+        <span>click to sound the charge</span>
+      </div>
+      <div class="battle-overlay hidden" id="battle-over">
+        <div id="battle-over-title">THE LINE HAS BROKEN</div>
+        <span id="battle-final"></span>
+        <button id="battle-again">Rally and fight again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE RIDE OF BUCEPHALUS ============ -->
+<section class="ride">
+  <div class="container">
+    <h2><span class="sec-num">VII.</span> THE RIDE OF BUCEPHALUS</h2>
+    <p class="sec-sub">
+      The horse no man could master carries the king across the plain.
+      <strong>Click or press SPACE</strong> to leap the obstacles — twice for a
+      double-jump. The wind only gets faster.
+    </p>
+    <div class="battle-wrap ride-wrap">
+      <canvas id="ride"></canvas>
+      <div class="battle-hud">
+        <span id="ride-score">0 m</span>
+        <span id="ride-best"></span>
+      </div>
+      <div class="battle-overlay" id="ride-start">
+        <div>🐎 THE RIDE OF BUCEPHALUS</div>
+        <span>click or press space to ride</span>
+      </div>
+      <div class="battle-overlay hidden" id="ride-over">
+        <div id="ride-over-title">BUCEPHALUS STUMBLED</div>
+        <span id="ride-final"></span>
+        <button id="ride-again">Ride again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="vergina" data-size="40"></div>
+  <p>ΣΟΦΊΑ · ΔΌΞΑ · ΘΆΡΣΟΣ — wisdom, glory, courage</p>
+</footer>
+
+<button id="audio-toggle" title="play the royal hymn">♪</button>
+
+<script src="js/main.js"></script>
+<script src="js/battle.js"></script>
+<script src="js/ride.js"></script>
+<script src="js/audio.js"></script>
+</body>
+</html>
