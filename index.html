@@ -201,6 +201,90 @@
   </div>
 </section>
 
+<!-- ============ THE GORDIAN KNOT ============ -->
+<section class="knot-sec">
+  <div class="container">
+    <h2><span class="sec-num">VIII.</span> THE GORDIAN KNOT</h2>
+    <p class="sec-sub">
+      No one could untie it, so the king cut it. <strong>Swipe across the threads</strong>
+      to slice every one before the sand runs out. Each knot is bigger than the last.
+    </p>
+    <div class="battle-wrap game-wrap knot-wrap">
+      <canvas id="knot" class="game-canvas"></canvas>
+      <div class="battle-hud">
+        <span id="knot-score">0 cut</span>
+        <span id="knot-level">knot 1</span>
+      </div>
+      <div class="battle-overlay" id="knot-start">
+        <div>⚔ THE GORDIAN KNOT ⚔</div>
+        <span>tap to draw your sword</span>
+      </div>
+      <div class="battle-overlay hidden" id="knot-over">
+        <div class="over-title">THE SAND HAS RUN OUT</div>
+        <span id="knot-final"></span>
+        <button id="knot-again">Cut another knot</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PHALANX DEFENSE ============ -->
+<section class="phalanx-sec">
+  <div class="container">
+    <h2><span class="sec-num">IX.</span> PHALANX DEFENSE</h2>
+    <p class="sec-sub">
+      Foot soldiers and chariots charge the city walls. <strong>Tap a square</strong> to
+      station a hoplite (5 drachmae). Coins refill over time and from every enemy
+      you defeat. Don't let three get past.
+    </p>
+    <div class="battle-wrap game-wrap">
+      <canvas id="phalanx" class="game-canvas"></canvas>
+      <div class="battle-hud">
+        <span id="phalanx-wave">wave 1</span>
+        <span id="phalanx-coins">◉ 15 drachmae</span>
+        <span id="phalanx-lives">☀ ☀ ☀</span>
+      </div>
+      <div class="battle-overlay" id="phalanx-start">
+        <div>🛡 FORM THE PHALANX 🛡</div>
+        <span>tap to man the walls</span>
+      </div>
+      <div class="battle-overlay hidden" id="phalanx-over">
+        <div class="over-title">THE WALLS HAVE FALLEN</div>
+        <span id="phalanx-final"></span>
+        <button id="phalanx-again">Defend again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ THE LIGHTHOUSE OF ALEXANDRIA ============ -->
+<section class="lighthouse-sec">
+  <div class="container">
+    <h2><span class="sec-num">X.</span> THE LIGHTHOUSE OF ALEXANDRIA</h2>
+    <p class="sec-sub">
+      Ships need the beacon to find the harbor. <strong>Watch the signal, then tap the
+      lamps in the same order.</strong> Every round adds one more light, and the city
+      glows brighter.
+    </p>
+    <div class="battle-wrap game-wrap">
+      <canvas id="lighthouse" class="game-canvas"></canvas>
+      <div class="battle-hud">
+        <span id="lh-round">round 0</span>
+        <span id="lh-best"></span>
+      </div>
+      <div class="battle-overlay" id="lh-start">
+        <div>🔥 LIGHT THE BEACON 🔥</div>
+        <span>tap to begin the watch</span>
+      </div>
+      <div class="battle-overlay hidden" id="lh-over">
+        <div class="over-title">A SHIP WAS LOST</div>
+        <span id="lh-final"></span>
+        <button id="lh-again">Light it again</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <footer>
   <div class="vergina" data-size="40"></div>
   <p>ΣΟΦΊΑ · ΔΌΞΑ · ΘΆΡΣΟΣ — wisdom, glory, courage</p>
@@ -211,6 +295,10 @@
 <script src="js/main.js"></script>
 <script src="js/battle.js"></script>
 <script src="js/ride.js"></script>
+<script src="js/sfx.js"></script>
+<script src="js/knot.js"></script>
+<script src="js/phalanx.js"></script>
+<script src="js/lighthouse.js"></script>
 <script src="js/audio.js"></script>
 </body>
 </html>
