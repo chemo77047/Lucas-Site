@@ -265,11 +265,24 @@
     ctx.restore();
   }
 
-  function drawCoin(scaleX, seed) {
+  function drawCoin(scaleX, seed, edge = 0, shade = 0) {
     ctx.clearRect(0, 0, 520, 520);
+    const sx = Math.max(scaleX, 0.02);
+
+    // coin thickness, visible while it turns
+    const T = 18 * edge;
+    if (Math.abs(T) > 0.5) {
+      for (let i = 0; i <= 10; i++) {
+        ctx.beginPath();
+        ctx.ellipse(CX + T / 2 - (T * i) / 10, CY, R * sx, R, 0, 0, Math.PI * 2);
+        ctx.fillStyle = i % 2 ? "#8a6a1f" : "#a7832e";
+        ctx.fill();
+      }
+    }
+
     ctx.save();
-    ctx.translate(CX, CY);
-    ctx.scale(Math.abs(scaleX) < 0.03 ? 0.03 : scaleX, 1);
+    ctx.translate(CX - T / 2, CY);
+    ctx.scale(sx, 1);
     ctx.translate(-CX, -CY);
 
     // body
@@ -320,6 +333,12 @@
       ctx.stroke();
     }
 
+    if (shade > 0.01) {
+      ctx.beginPath(); ctx.arc(CX, CY, R, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(30,18,2,${0.45 * shade})`;
+      ctx.fill();
+    }
+
     ctx.restore();
   }
 
@@ -334,17 +353,24 @@
     };
   }
 
-  function mint() {
-    mintSeed = Math.random() * 100;
-    document.getElementById("minted").textContent = ++minted;
-    // a strike is a quick flip-flourish
-    if (!flip) flip = { t0: performance.now(), swap: Math.random() < 0.3 };
+  const other = (s) => (s === "obverse" ? "reverse" : "obverse");
+  const TOSS_MS = 1100, SETTLE_MS = 350;
+
+  // toss the coin so it lands on `endSide`
+  function toss(endSide) {
+    if (flip) return;
+    flip = { t0: performance.now(), start: side, half: endSide === side ? 6 : 7 };
   }
 
-  coin.addEventListener("click", () => {
-    if (!flip) flip = { t0: performance.now(), swap: true };
-  });
-  document.getElementById("mint-btn").addEventListener("click", mint);
+  function mint(endSide) {
+    if (flip) return;
+    mintSeed = Math.random() * 100;
+    document.getElementById("minted").textContent = ++minted;
+    toss(endSide || (Math.random() < 0.3 ? other(side) : side));
+  }
+
+  coin.addEventListener("click", () => toss(other(side)));
+  document.getElementById("mint-btn").addEventListener("click", () => mint());
   document.getElementById("coin-save").addEventListener("click", () => {
     try {
       const a = document.createElement("a");
@@ -357,19 +383,43 @@
   });
 
   (function coinLoop() {
-    let scaleX = 1;
+    let scaleX = 1, edge = 0, shade = 0, lift = 0, grow = 0;
     if (flip) {
-      const t = (performance.now() - flip.t0) / 700;
-      if (t >= 1) { flip = null; }
-      else {
-        const phase = t < 0.5 ? t * 2 : (1 - t) * 2; // 1→0→1
-        if (t >= 0.5 && flip.swap) { flip.swap = false; side = side === "obverse" ? "reverse" : "obverse"; }
-        scaleX = Math.cos((1 - phase) * Math.PI / 2);
+      const ms = performance.now() - flip.t0;
+      if (ms < TOSS_MS) {
+        const t = ms / TOSS_MS;
+        const ang = (1 - Math.pow(1 - t, 3)) * flip.half * Math.PI;
+        const crossings = Math.floor(ang / Math.PI + 0.5);
+        side = crossings % 2 ? other(flip.start) : flip.start;
+        scaleX = Math.abs(Math.cos(ang));
+        edge = Math.sin(ang) * (Math.cos(ang) < 0 ? -1 : 1);
+        shade = 1 - scaleX;
+        const arc = 4 * t * (1 - t);
+        lift = 110 * arc;
+        grow = 0.1 * arc;
+      } else if (ms < TOSS_MS + SETTLE_MS) {
+        const u = (ms - TOSS_MS) / SETTLE_MS;
+        lift = 14 * Math.abs(Math.sin(u * Math.PI * 2)) * (1 - u);
+      } else {
+        flip = null;
       }
     }
-    drawCoin(scaleX, mintSeed);
+    coin.style.transform = lift || grow ? `translateY(${-lift}px) scale(${1 + grow})` : "";
+    drawCoin(scaleX, mintSeed, edge, shade);
     requestAnimationFrame(coinLoop);
   })();
 
-  mint(); // strike the first coin
+  // strike the first coin once the portrait is loaded and the coin is on screen,
+  // so the first landing always shows the face
+  let coinSeen = false, firstStruck = false, medalFailed = false;
+  function firstStrike() {
+    if (firstStruck || !coinSeen || !(medalReady || medalFailed)) return;
+    firstStruck = true;
+    mint("obverse");
+  }
+  medalImg.addEventListener("load", firstStrike);
+  medalImg.addEventListener("error", () => { medalFailed = true; firstStrike(); });
+  new IntersectionObserver((entries, obs) => {
+    if (entries.some((e) => e.isIntersecting)) { coinSeen = true; obs.disconnect(); firstStrike(); }
+  }, { threshold: 0.4 }).observe(coin);
 })();
