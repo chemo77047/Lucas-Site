@@ -627,3 +627,12 @@ footer p { color: var(--gold-dim); font-family: "Cinzel", serif; letter-spacing:
   font-size: 0.95rem !important;
 }
 .foot-small code { color: var(--gold); font-size: 0.9em; }
+
+/* games: taps and double-taps go to the game, not page zoom/selection */
+.battle-wrap {
+  touch-action: manipulation;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
