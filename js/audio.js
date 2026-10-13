@@ -16,13 +16,25 @@
   // iOS: let the hymn play even when the ringer switch is on silent
   try { if (navigator.audioSession) navigator.audioSession.type = "playback"; } catch (e) {}
 
-  let ctx = null, gain = null, source = null, bufferPromise = null;
+  // download the song right away; the audio engine itself is only
+  // created inside a touch/click, which is what iPhones require
+  const bytes = AC ? fetch(SRC).then((r) => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); }) : null;
+  if (bytes) bytes.catch(() => {});
+
+  let ctx = null, gain = null, source = null;
   let fallback = null;       // <audio> element, only if Web Audio can't be used
-  let on = false;            // music currently audible
-  let started = false;       // first gesture already handled
+  let want = false;          // visitor wants music on
+  let started = false;       // first-touch autoplay already happened
   let pauseTimer = null;
 
+  function audible() {
+    if (!want) return false;
+    if (fallback) return !fallback.paused;
+    return !!ctx && ctx.state === "running";
+  }
+
   function reflect() {
+    const on = want;
     btn.classList.toggle("on", on);
     btn.textContent = on ? "♫" : "♪";
     btn.title = on ? "silence the hymn" : "play the royal hymn";
@@ -37,15 +49,6 @@
     return [a / buf.sampleRate, (b + 1) / buf.sampleRate];
   }
 
-  function loadBuffer() {
-    if (!bufferPromise) {
-      bufferPromise = fetch(SRC)
-        .then((r) => { if (!r.ok) throw new Error(r.status); return r.arrayBuffer(); })
-        .then((data) => new Promise((res, rej) => ctx.decodeAudioData(data, res, rej)));
-    }
-    return bufferPromise;
-  }
-
   function useFallback() {
     if (!fallback) {
       fallback = new Audio(SRC);
@@ -54,49 +57,58 @@
     }
   }
 
-  function setup() {
-    if (ctx || fallback) return;
+  // must run inside a user gesture
+  function unlock() {
+    if (fallback) return;
     if (!AC) { useFallback(); return; }
-    ctx = new AC();
-    gain = ctx.createGain();
-    gain.gain.value = 0;
-    gain.connect(ctx.destination);
-    ctx.onstatechange = () => { if (ctx && ctx.state === "running") markStarted(); };
-    loadBuffer().then((buf) => {
-      const [s, e] = loopBounds(buf);
-      source = ctx.createBufferSource();
-      source.buffer = buf;
-      source.loop = true;
-      source.loopStart = s;
-      source.loopEnd = e;
-      source.connect(gain);
-      source.start(0, s);
-    }).catch(() => {
-      // e.g. opened straight from disk (file://) — fall back to plain audio
-      ctx.close(); ctx = null; useFallback();
-      if (on) fallback.play().catch(() => {});
-    });
+    if (!ctx) {
+      ctx = new AC();
+      gain = ctx.createGain();
+      gain.gain.value = 0;
+      gain.connect(ctx.destination);
+      ctx.onstatechange = () => { if (audible()) markStarted(); };
+      bytes
+        .then((data) => new Promise((res, rej) => ctx.decodeAudioData(data, res, rej)))
+        .then((buf) => {
+          const [s, e] = loopBounds(buf);
+          source = ctx.createBufferSource();
+          source.buffer = buf;
+          source.loop = true;
+          source.loopStart = s;
+          source.loopEnd = e;
+          source.connect(gain);
+          source.start(0, s);
+        })
+        .catch(() => {
+          // e.g. opened straight from disk (file://) — fall back to plain audio
+          try { ctx.close(); } catch (e) {}
+          ctx = null; useFallback();
+          if (want) fallback.play().then(markStarted).catch(() => {});
+        });
+    }
+    // a silent blip played inside the gesture is what wakes iOS audio
+    const blip = ctx.createBufferSource();
+    blip.buffer = ctx.createBuffer(1, 1, 22050);
+    blip.connect(ctx.destination);
+    blip.start(0);
+    if (ctx.state !== "running") ctx.resume().catch(() => {});
   }
 
   function turnOn() {
-    setup();
-    clearTimeout(pauseTimer);
-    on = true;
+    want = true;
     reflect();
-    if (fallback) {
-      fallback.play().then(markStarted).catch(() => { on = false; reflect(); });
-      return;
-    }
-    ctx.resume().then(() => {
-      const t = ctx.currentTime;
-      gain.gain.cancelScheduledValues(t);
-      gain.gain.setValueAtTime(gain.gain.value, t);
-      gain.gain.linearRampToValueAtTime(TARGET, t + FADE);
-    }).catch(() => { on = false; reflect(); });
+    clearTimeout(pauseTimer);
+    unlock();
+    if (fallback) { fallback.play().then(markStarted).catch(() => {}); return; }
+    const t = ctx.currentTime;
+    gain.gain.cancelScheduledValues(t);
+    gain.gain.setValueAtTime(gain.gain.value, t);
+    gain.gain.linearRampToValueAtTime(TARGET, t + FADE);
+    if (audible()) markStarted();
   }
 
   function turnOff() {
-    on = false;
+    want = false;
     reflect();
     if (fallback) { fallback.pause(); return; }
     if (!ctx) return;
@@ -106,12 +118,12 @@
     gain.gain.linearRampToValueAtTime(0, t + FADE);
     // suspend after the fade so it resumes exactly where it left off
     clearTimeout(pauseTimer);
-    pauseTimer = setTimeout(() => { if (!on) ctx.suspend(); }, FADE * 1000 + 50);
+    pauseTimer = setTimeout(() => { if (!want && ctx) ctx.suspend(); }, FADE * 1000 + 50);
   }
 
-  // the first interaction anywhere starts the hymn — only until it has
-  // actually started (or the visitor used the button); never after that
-  const FIRST = ["pointerdown", "touchend", "click", "keydown"];
+  // the first touch anywhere starts the hymn; keeps trying on each touch
+  // until sound is actually playing, and never after the button is used
+  const FIRST = ["touchend", "pointerup", "click", "keydown"];
   function markStarted() {
     if (started) return;
     started = true;
@@ -124,16 +136,19 @@
   FIRST.forEach((ev) => window.addEventListener(ev, firstGesture, true));
 
   btn.addEventListener("click", () => {
-    on ? turnOff() : turnOn();
     markStarted();
+    // if it shows on but the phone kept it silent, a press wakes it instead of muting
+    if (want && !audible()) turnOn();
+    else want ? turnOff() : turnOn();
   });
 
-  // try true autoplay; browsers that block it wait for the first gesture
-  if (AC) {
-    setup();
-    if (ctx) ctx.resume().then(() => {
-      if (ctx && ctx.state === "running" && !on) turnOn();
-    }).catch(() => {});
-  }
+  // coming back via the back button: let the next touch wake the sound again
+  window.addEventListener("pageshow", (e) => {
+    if (e.persisted && want && !audible()) {
+      started = false;
+      FIRST.forEach((ev) => window.addEventListener(ev, firstGesture, true));
+    }
+  });
+
   reflect();
 })();
